@@ -1,19 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 
+const INTERACTIVE = 'a, button, input, textarea, select, label, [role="button"], [data-cursor]'
+
 /**
- * A glowing gold cursor that trails the mouse and grows when hovering
- * interactive elements. Pure transform animation — runs off rAF, never
- * triggers React re-renders on move. Disabled on touch / coarse pointers.
- *
- * `enabled` is computed lazily (synchronously) so the cursor elements are
- * present in the very first render — that way the refs are valid by the time
- * the effect runs and starts driving them.
+ * Gold dot + trailing ring. The ring grows over interactive elements and turns
+ * into a filled label ("View", "Open"…) over anything carrying a
+ * `data-cursor="Label"` attribute. Runs entirely off requestAnimationFrame —
+ * no React re-renders on mouse move. Disabled on touch / coarse pointers.
  */
 export default function CustomCursor() {
   const [enabled] = useState(
-    () =>
-      typeof window !== 'undefined' &&
-      window.matchMedia('(pointer: fine)').matches
+    () => typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches
   )
   const dotRef = useRef(null)
   const ringRef = useRef(null)
@@ -24,16 +21,15 @@ export default function CustomCursor() {
     const ring = ringRef.current
     if (!dot || !ring) return
 
-    // Only hide the native cursor now that we know the custom one is live.
     document.documentElement.classList.add('has-custom-cursor')
 
     let mouseX = window.innerWidth / 2
     let mouseY = window.innerHeight / 2
     let ringX = mouseX
     let ringY = mouseY
+    let down = false
     let raf
 
-    // Start centered so the cursor is visible even before the first move.
     dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`
     ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`
 
@@ -44,25 +40,31 @@ export default function CustomCursor() {
     }
 
     const loop = () => {
-      // Ring eases toward the dot for a soft elastic trail.
-      ringX += (mouseX - ringX) * 0.18
-      ringY += (mouseY - ringY) * 0.18
-      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`
+      ringX += (mouseX - ringX) * 0.16
+      ringY += (mouseY - ringY) * 0.16
+      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) scale(${down ? 0.8 : 1})`
       raf = requestAnimationFrame(loop)
     }
 
-    const onOver = (e) => {
-      if (e.target.closest('a, button, [data-cursor], input, textarea')) {
+    const setState = (target) => {
+      const el = target?.closest?.(INTERACTIVE)
+      const label = el?.dataset?.cursor
+      ring.classList.remove('cursor-ring--active', 'cursor-ring--label')
+      ring.textContent = ''
+      dot.style.opacity = '1'
+      if (!el) return
+      if (label && label !== 'true') {
+        ring.classList.add('cursor-ring--label')
+        ring.textContent = label
+        dot.style.opacity = '0'
+      } else {
         ring.classList.add('cursor-ring--active')
       }
     }
-    const onOut = (e) => {
-      if (e.target.closest('a, button, [data-cursor], input, textarea')) {
-        ring.classList.remove('cursor-ring--active')
-      }
-    }
-    const onDown = () => ring.classList.add('cursor-ring--down')
-    const onUp = () => ring.classList.remove('cursor-ring--down')
+
+    const onOver = (e) => setState(e.target)
+    const onDown = () => { down = true }
+    const onUp = () => { down = false }
     const onLeave = () => {
       dot.style.opacity = '0'
       ring.style.opacity = '0'
@@ -74,7 +76,6 @@ export default function CustomCursor() {
 
     window.addEventListener('mousemove', onMove, { passive: true })
     window.addEventListener('mouseover', onOver, { passive: true })
-    window.addEventListener('mouseout', onOut, { passive: true })
     window.addEventListener('mousedown', onDown)
     window.addEventListener('mouseup', onUp)
     document.addEventListener('mouseleave', onLeave)
@@ -86,7 +87,6 @@ export default function CustomCursor() {
       document.documentElement.classList.remove('has-custom-cursor')
       window.removeEventListener('mousemove', onMove)
       window.removeEventListener('mouseover', onOver)
-      window.removeEventListener('mouseout', onOut)
       window.removeEventListener('mousedown', onDown)
       window.removeEventListener('mouseup', onUp)
       document.removeEventListener('mouseleave', onLeave)

@@ -1,87 +1,76 @@
 import { motion } from 'framer-motion'
-import { useScrollReveal } from '@/hooks/useScrollReveal'
-import SectionLabel from '@/components/ui/SectionLabel'
-import { SKILLS } from '@/lib/data'
+import SectionHeading from '@/components/ui/SectionHeading'
+import Marquee from '@/components/ui/Marquee'
+import SpotlightCard from '@/components/ui/SpotlightCard'
+import { SKILL_ROWS, NOW } from '@/lib/data'
 
-function SkillPill({ label, index, inView }) {
-  return (
-    <motion.span
-      initial={{ opacity: 0, scale: 0.85 }}
-      animate={inView ? { opacity: 1, scale: 1 } : {}}
-      transition={{ duration: 0.3, delay: index * 0.04 }}
-      className="inline-flex items-center px-3 py-1.5 rounded-full border border-border
-        bg-surface text-text-secondary text-sm font-mono
-        hover:border-gold/50 hover:text-gold hover:bg-gold/5 hover:shadow-gold-sm
-        transition-all duration-200 cursor-default"
-    >
-      {label}
-    </motion.span>
-  )
-}
-
-function SkillGroup({ title, icon, skills, inView }) {
-  return (
-    <div className="bg-card rounded-2xl border border-border p-6 md:p-8">
-      <div className="flex items-center gap-3 mb-6">
-        <span className="text-2xl">{icon}</span>
-        <h3 className="font-display font-semibold text-lg">{title}</h3>
-      </div>
-      <div className="flex flex-wrap gap-2">
-        {skills.map((skill, i) => (
-          <SkillPill key={skill} label={skill} index={i} inView={inView} />
-        ))}
-      </div>
-    </div>
-  )
-}
+const ROW_COLORS = ['#F5A623', '#3B82F6', '#8B5CF6']
 
 export default function Skills() {
-  const { ref, inView } = useScrollReveal()
-
   return (
-    <section id="skills" className="section-padding bg-surface/30">
-      <div className="max-w-6xl mx-auto px-6">
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-        >
-          <SectionLabel>Skills</SectionLabel>
-          <h2 className="font-display font-bold text-3xl md:text-4xl mb-3">
-            What I work with
-          </h2>
-          <p className="text-text-secondary mb-12 max-w-xl">
-            From first wireframe to shipped app — the full toolkit.
-          </p>
+    <section id="skills" className="section-padding relative overflow-hidden">
+      <div className="container-x">
+        <SectionHeading
+          index="05"
+          eyebrow="Toolbox"
+          title="What I *work with.*"
+          description="From the first wireframe to the store listing — the full stack I reach for."
+          className="mb-12"
+        />
+      </div>
 
-          <div className="grid md:grid-cols-2 gap-6 mb-6">
-            <SkillGroup
-              title="App Development"
-              icon="📱"
-              skills={SKILLS.development}
-              inView={inView}
-            />
-            <SkillGroup
-              title="UI/UX Design"
-              icon="🎨"
-              skills={SKILLS.design}
-              inView={inView}
-            />
-          </div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="space-y-4"
+      >
+        {SKILL_ROWS.map((row, r) => (
+          <Marquee
+            key={r}
+            items={row}
+            reverse={r % 2 === 1}
+            speed={46 + r * 8}
+            render={(skill) => (
+              <span className="mx-2 inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full border border-border bg-surface font-mono text-sm text-text-secondary hover:border-gold/60 hover:text-text-primary hover:shadow-gold-sm transition-all duration-300 cursor-default whitespace-nowrap">
+                <span className="w-1.5 h-1.5 rounded-full" style={{ background: ROW_COLORS[r] }} />
+                {skill}
+              </span>
+            )}
+          />
+        ))}
+      </motion.div>
 
-          <div className="bg-card rounded-2xl border border-border p-6 md:p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-2xl">🛠️</span>
-              <h3 className="font-display font-semibold text-lg">Tools & Platforms</h3>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {SKILLS.tools.map((skill, i) => (
-                <SkillPill key={skill} label={skill} index={i} inView={inView} />
-              ))}
-            </div>
-          </div>
-        </motion.div>
+      {/* Right now */}
+      <div className="container-x mt-16 md:mt-20">
+        <div className="grid md:grid-cols-3 gap-5">
+          {NOW.map((item, i) => (
+            <motion.div
+              key={item.title}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+            >
+              <SpotlightCard color={`${item.accent}99`} className="h-full" innerClassName="p-6 md:p-7">
+                <div className="flex items-center gap-2 mb-4 font-mono text-[11px] uppercase tracking-widest text-text-muted">
+                  {item.live ? (
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping" style={{ background: item.accent }} />
+                      <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: item.accent }} />
+                    </span>
+                  ) : (
+                    <span className="w-2 h-2 rounded-full" style={{ background: item.accent }} />
+                  )}
+                  {item.label}
+                </div>
+                <h3 className="font-display font-extrabold text-2xl tracking-tight mb-2">{item.title}</h3>
+                <p className="text-text-secondary text-sm leading-relaxed">{item.body}</p>
+              </SpotlightCard>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   )
