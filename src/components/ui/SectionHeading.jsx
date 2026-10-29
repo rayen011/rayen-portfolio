@@ -5,23 +5,27 @@ export default function SectionHeading({ index, eyebrow, title, description, cla
   return (
     <div className={`max-w-3xl ${className}`}>
       <motion.div
-        initial={{ opacity: 0, x: -12 }}
-        whileInView={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0, y: 8 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="flex items-center gap-3 mb-5"
+        className="flex items-baseline gap-4 mb-6"
       >
-        <span className="w-8 h-px bg-gold" />
-        <span className="font-mono text-xs tracking-[0.25em] uppercase text-gold">
-          {index && <span className="text-text-muted mr-2">{index}</span>}
-          {eyebrow}
+        {index && (
+          <span className="font-display font-extrabold text-5xl md:text-6xl leading-none text-outline select-none">
+            {index}
+          </span>
+        )}
+        <span className="flex items-center gap-3">
+          <span className="w-6 h-px bg-gold" />
+          <span className="label-mono text-gold">{eyebrow}</span>
         </span>
       </motion.div>
 
       <RevealText
         as="h2"
         text={title}
-        className="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl leading-[1.05] tracking-tight mb-5"
+        className="font-display font-extrabold display-lg mb-6"
       />
 
       {description && (

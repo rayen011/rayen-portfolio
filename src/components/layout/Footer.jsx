@@ -7,7 +7,10 @@ export default function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="relative border-t border-border bg-surface overflow-hidden">
+    <footer className="relative bg-surface overflow-hidden">
+      {/* A lit horizon in place of a plain top border */}
+      <div className="horizon relative" aria-hidden="true" />
+
       {/* Giant name */}
       <div className="container-x pt-14 md:pt-20">
         <motion.p

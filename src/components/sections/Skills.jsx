@@ -45,31 +45,45 @@ export default function Skills() {
       {/* Right now */}
       <div className="container-x mt-16 md:mt-20">
         <div className="grid md:grid-cols-3 gap-5">
-          {NOW.map((item, i) => (
-            <motion.div
-              key={item.title}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-            >
-              <SpotlightCard color={`${item.accent}99`} className="h-full" innerClassName="p-6 md:p-7">
-                <div className="flex items-center gap-2 mb-4 font-mono text-[11px] uppercase tracking-widest text-text-muted">
-                  {item.live ? (
-                    <span className="relative flex h-2 w-2">
-                      <span className="absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping" style={{ background: item.accent }} />
-                      <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: item.accent }} />
-                    </span>
-                  ) : (
-                    <span className="w-2 h-2 rounded-full" style={{ background: item.accent }} />
-                  )}
-                  {item.label}
-                </div>
-                <h3 className="font-display font-extrabold text-2xl tracking-tight mb-2">{item.title}</h3>
-                <p className="text-text-secondary text-sm leading-relaxed">{item.body}</p>
-              </SpotlightCard>
-            </motion.div>
-          ))}
+          {NOW.map((item, i) => {
+            // Cards with a link become one; the rest stay plain blocks.
+            const Body = item.href ? 'a' : 'div'
+            const bodyProps = item.href
+              ? { href: item.href, target: '_blank', rel: 'noreferrer', 'data-cursor': 'Open' }
+              : {}
+            return (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
+              >
+                <SpotlightCard color={`${item.accent}99`} className="h-full group" innerClassName="p-6 md:p-7">
+                  <Body {...bodyProps} className="flex flex-col h-full">
+                    <div className="flex items-center justify-between gap-2 mb-4 label-mono text-text-muted">
+                      <span className="flex items-center gap-2">
+                        {item.live ? (
+                          <span className="relative flex h-2 w-2">
+                            <span className="absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping" style={{ background: item.accent }} />
+                            <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: item.accent }} />
+                          </span>
+                        ) : (
+                          <span className="w-2 h-2 rounded-full" style={{ background: item.accent }} />
+                        )}
+                        {item.label}
+                      </span>
+                      {item.href && (
+                        <span className="transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" style={{ color: item.accent }}>↗</span>
+                      )}
+                    </div>
+                    <h3 className="font-display font-extrabold text-2xl tracking-tight mb-2">{item.title}</h3>
+                    <p className="text-text-secondary text-sm leading-relaxed">{item.body}</p>
+                  </Body>
+                </SpotlightCard>
+              </motion.div>
+            )
+          })}
         </div>
       </div>
     </section>

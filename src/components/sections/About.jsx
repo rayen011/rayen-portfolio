@@ -163,9 +163,9 @@ export default function About() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mt-10 flex flex-wrap items-center gap-3"
           >
-            <span className="font-mono text-xs uppercase tracking-widest text-text-muted mr-2">Built for</span>
+            <span className="label-mono text-text-muted mr-2">Built for</span>
             {MARKETS.map((m) => (
-              <span key={m.name} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-surface text-sm text-text-secondary hover:border-gold/50 hover:text-text-primary transition-colors">
+              <span key={m.name} className="chip hover:border-gold/50 hover:text-text-primary transition-colors">
                 <span>{m.flag}</span> {m.name}
               </span>
             ))}

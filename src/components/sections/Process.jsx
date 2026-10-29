@@ -47,7 +47,7 @@ export default function Process() {
                 </div>
                 <h3 className="font-display font-bold text-xl md:text-2xl tracking-tight mb-3">{step.title}</h3>
                 <p className="text-text-secondary text-sm leading-relaxed mb-5">{step.description}</p>
-                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-surface font-mono text-[11px] text-text-secondary">
+                <span className="chip">
                   <span className="w-1.5 h-1.5 rounded-full bg-gold" />
                   {step.deliverable}
                 </span>

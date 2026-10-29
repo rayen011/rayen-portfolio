@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, useMotionValue, useMotionTemplate } from 'framer-motion'
-import { PROFILE, HERO_ROLES, TICKER, SOCIAL_LINKS } from '@/lib/data'
+import { PROFILE, HERO_ROLES, TICKER, SOCIAL_LINKS, LATEST_RELEASE } from '@/lib/data'
 import { scrollToTarget } from '@/components/ui/SmoothScroll'
 import PhoneMockup from '@/components/ui/PhoneMockup'
 import RevealText from '@/components/ui/RevealText'
@@ -56,22 +56,39 @@ export default function Hero({ ready }) {
       onMouseMove={onMove}
       className="relative min-h-screen flex flex-col overflow-hidden"
     >
-      {/* background layers */}
-      <div className="absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black_20%,transparent_75%)] pointer-events-none" aria-hidden="true" />
+      {/* background layers, back to front: aurora, two grids, spotlight, vignette */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div className="aurora -top-56 -left-44 w-[640px] h-[640px] bg-gold/[0.13] animate-drift" />
+        <div className="aurora -bottom-56 -right-32 w-[680px] h-[680px] bg-[#8B5CF6]/[0.11] animate-drift [animation-delay:-11s]" />
+        <div className="aurora top-1/3 left-1/2 w-[420px] h-[420px] bg-[#3B82F6]/[0.07] animate-drift [animation-delay:-5s]" />
+      </div>
+      <div className="absolute inset-0 bg-grid-fine [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,black,transparent_70%)] pointer-events-none" aria-hidden="true" />
+      <div className="absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_75%_65%_at_50%_40%,black_15%,transparent_78%)] pointer-events-none" aria-hidden="true" />
       <motion.div style={{ background: spotlight }} className="absolute inset-0 pointer-events-none" aria-hidden="true" />
-      <div className="absolute -top-40 -left-40 w-[520px] h-[520px] rounded-full bg-gold/10 blur-[120px] pointer-events-none" aria-hidden="true" />
-      <div className="absolute -bottom-40 -right-20 w-[560px] h-[560px] rounded-full bg-[#8B5CF6]/10 blur-[130px] pointer-events-none" aria-hidden="true" />
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_80%_70%_at_50%_45%,transparent_40%,#070708_100%)]" aria-hidden="true" />
 
       {/* content */}
       <div className="relative z-10 flex-1 container-x grid lg:grid-cols-12 gap-12 lg:gap-6 items-center pt-28 pb-14 lg:pt-24 lg:pb-10">
         <div className="lg:col-span-7 text-center lg:text-left">
-          {/* availability badge */}
-          <motion.div {...fade(0.1)} className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-white/10 glass mb-8">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+          {/* availability + the newest thing that shipped */}
+          <motion.div {...fade(0.1)} className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 mb-8">
+            <span className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-white/10 glass">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+              </span>
+              <span className="text-text-secondary text-xs sm:text-sm font-mono">{PROFILE.availabilityLabel}</span>
             </span>
-            <span className="text-text-secondary text-xs sm:text-sm font-mono">{PROFILE.availabilityLabel}</span>
+            <a
+              href={LATEST_RELEASE.href}
+              target="_blank"
+              rel="noreferrer"
+              data-cursor="Open"
+              className="group inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gold/30 bg-gold/[0.08] text-xs sm:text-sm font-mono text-gold hover:border-gold/60 hover:bg-gold/[0.14] transition-colors"
+            >
+              {LATEST_RELEASE.label}
+              <span className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+            </a>
           </motion.div>
 
           {/* name + typewriter */}
@@ -89,7 +106,7 @@ export default function Hero({ ready }) {
             animate={ready}
             delay={0.3}
             stagger={0.06}
-            className="font-display font-extrabold text-[2.5rem] leading-[1.02] sm:text-5xl lg:text-[3.6rem] xl:text-[4.4rem] tracking-tight mb-7"
+            className="font-display font-extrabold display-xl mb-7"
           />
 
           {/* description */}
@@ -123,7 +140,7 @@ export default function Hero({ ready }) {
           <motion.div {...fade(1.2)} className="mt-12 flex items-center justify-center lg:justify-start gap-5 text-xs font-mono text-text-muted">
             <span>Recent builds</span>
             <span className="h-px w-8 bg-border" />
-            <span className="text-text-secondary">RESTOCK · Stockfy · StudySwap · SwiftDrop</span>
+            <span className="text-text-secondary">Life Tycoon · RESTOCK · Stockfy · StudySwap</span>
           </motion.div>
         </div>
 

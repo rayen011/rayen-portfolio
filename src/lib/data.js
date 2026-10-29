@@ -14,6 +14,12 @@ export const PROFILE = {
   cv: null, // set to '/cv.pdf' after dropping the file into /public
 }
 
+/** The newest thing on a store, shown as a badge in the hero. */
+export const LATEST_RELEASE = {
+  label: 'Life Tycoon is live on Google Play',
+  href: 'https://play.google.com/store/apps/details?id=com.rayen.life_tycoon',
+}
+
 export const SOCIAL_LINKS = {
   github: 'https://github.com/rayen011',
   linkedin: 'https://linkedin.com/in/rayen',
@@ -41,13 +47,14 @@ export const HERO_ROLES = [
   'Product Designer',
   'Firebase Architect',
   'SaaS Builder',
+  'Game Developer',
   'App Rescuer',
 ]
 
 export const TICKER = [
   'Flutter', 'Firebase', 'Bloc / Cubit', 'Supabase', 'Clean Architecture',
   'RevenueCat', 'Cloud Functions', 'Figma', 'React', 'Stripe', 'Claude API',
-  'Offline-first', 'RTL / Arabic', 'CI & Tests',
+  'Offline-first', 'RTL / Arabic', 'CI & Tests', 'AdMob', 'Play Store',
 ]
 
 export const STATS = [
@@ -137,8 +144,8 @@ export const PROCESS = [
 export const SKILL_ROWS = [
   [
     'Flutter', 'Dart', 'flutter_bloc', 'Cubit', 'get_it / injectable', 'go_router',
-    'freezed', 'Hive', 'RevenueCat', 'FCM push', 'Google Maps', 'Barcode scanning',
-    'Localization (l10n)', 'RTL layouts', 'Crashlytics',
+    'freezed', 'Hive / Hive CE', 'RevenueCat', 'AdMob', 'FCM push', 'Google Maps',
+    'Barcode scanning', 'Localization (l10n)', 'RTL layouts', 'Crashlytics',
   ],
   [
     'Firebase Auth', 'Firestore', 'Cloud Functions', 'Security Rules', 'Supabase',
@@ -149,22 +156,24 @@ export const SKILL_ROWS = [
     'Claude API', 'OpenAI', 'Gemini', 'Figma', 'Design systems', 'Prototyping',
     'Git / GitHub', 'GitHub Actions', 'Android Studio', 'Play Console',
     'App Store Connect', 'Vercel', 'Cloudflare Workers', 'Framer Motion',
+    'Deterministic sim engines',
   ],
 ]
 
 export const NOW = [
   {
-    label: 'Now building',
-    title: 'Proofly',
-    body: 'AI product analyst — session friction detection with revenue-at-risk insights.',
-    accent: '#10B981',
+    label: 'Now live',
+    title: 'Life Tycoon',
+    body: 'Idle tycoon + life sim, free on Google Play. Deterministic Dart engine, balance bots playing whole lives in CI.',
+    accent: '#FFC94A',
     live: true,
+    href: 'https://play.google.com/store/apps/details?id=com.rayen.life_tycoon',
   },
   {
-    label: 'Latest release',
-    title: 'RESTOCK',
-    body: 'Home inventory with AI restocking predictions, barcode + voice input.',
-    accent: '#2DD4A0',
+    label: 'Latest build',
+    title: 'Stockfy',
+    body: 'Scan-to-sell shop back office — now sells by weight, and the ledger can be asked a question.',
+    accent: '#38A3E8',
   },
   {
     label: 'Proud number',
@@ -176,13 +185,38 @@ export const NOW = [
 
 /** Screens shown inside the hero phone. Files live in /public/screens. */
 export const HERO_SCREENS = [
+  { key: 'lifetycoon', app: 'Life Tycoon', tagline: 'Live on Google Play', color: '#FFC94A', src: '/screens/lifetycoon.jpg' },
   { key: 'restock', app: 'RESTOCK', tagline: 'AI restocking predictions', color: '#2DD4A0', src: '/screens/restock.jpg' },
-  { key: 'stockfy', app: 'Stockfy', tagline: 'Offline-first shop back office', color: '#8B5CF6', src: '/screens/stockfy.jpg' },
+  { key: 'stockfy', app: 'Stockfy', tagline: 'Offline-first shop back office', color: '#38A3E8', src: '/screens/stockfy.jpg' },
   { key: 'swiftdrop', app: 'SwiftDrop', tagline: 'Group orders & live tracking', color: '#F97316', src: '/screens/swiftdrop.jpg' },
   { key: 'studyswap', app: 'StudySwap', tagline: 'Live auctions, server-enforced', color: '#C8F000', src: '/screens/studyswap.jpg' },
 ]
 
 export const PROJECTS = [
+  {
+    id: 'lifetycoon',
+    title: 'Life Tycoon',
+    tagline: 'Start at 18 with $300. Build an empire before time runs out.',
+    description:
+      'An idle tycoon and life simulator in one, live on Google Play. A month passes every 30 seconds: work, study, open a food cart, hire managers, and read a real monthly profit and loss. Health and happiness decide how long the life lasts — then you choose an heir and play on as them. The whole game runs offline on a deterministic pure-Dart engine in its own package.',
+    highlights: [
+      'Deterministic pure-Dart engine, separate from the Flutter app',
+      'Balance bots play whole lives in CI; a money audit balances to the cent',
+      '36 businesses over 7 industries, each with a real monthly P&L',
+      'Dynasty, heirs and traits, 10 rivals, a fictional market — all offline',
+    ],
+    tags: ['Flutter', 'Dart engine', 'Hive CE', 'go_router', 'AdMob', 'Play Store'],
+    type: 'Mobile game',
+    year: '2026',
+    color: '#FFC94A',
+    image: '/projects/lifetycoon.jpg',
+    imageAlt: 'Life Tycoon screens: the life tab, the business empire, the market and a whole life of statistics',
+    github: 'https://github.com/rayen011/Life-Tycoon',
+    live: 'https://play.google.com/store/apps/details?id=com.rayen.life_tycoon',
+    liveLabel: 'Google Play',
+    badge: 'Live on Google Play',
+    featured: true,
+  },
   {
     id: 'restock',
     title: 'RESTOCK',
@@ -204,26 +238,25 @@ export const PROJECTS = [
     github: 'https://github.com/rayen011/restock',
     live: null,
     liveLabel: 'Google Play',
-    featured: true,
   },
   {
     id: 'stockfy',
     title: 'Stockfy',
     tagline: 'Inventory and takings for a small shop, on the phone the owner already has.',
     description:
-      'The camera is the till: scan a barcode and the product drops into a basket with the margin beside it. Reports lead with profit, not revenue. The app flags dead stock sleeping on the shelf, catches shrinkage with blind counts, keeps a credit book of who owes what, and sends restock orders to suppliers over WhatsApp — all offline-first.',
+      'The camera is the till: scan a barcode and the product drops into a basket with the margin beside it. It asks what kind of shop this is and defaults everything from the answer, sells by weight, length or time as well as by the piece, and leads reports with profit rather than revenue. Dead stock, shrinkage, the credit book and supplier reorders are all handled offline-first — and the ledger can be asked a question in plain language.',
     highlights: [
-      'Scan-to-sell checkout with per-line margin',
-      'Dead Stock Detective & Shrinkage Radar',
-      'Customer credit book and WhatsApp reorders',
-      'Offline-first with cloud sync, multi-business',
+      'Scan-to-sell checkout with per-line margin, sold by piece, kg, metre or hour',
+      'Dead Stock Detective, Shrinkage Radar and an askable ledger',
+      'Credit book, customer receipts and WhatsApp reorders',
+      'Offline-first: Hive is the source of truth, cloud pages merge in',
     ],
-    tags: ['Flutter', 'Cubit', 'Firebase', 'Hive', 'Analytics'],
+    tags: ['Flutter', 'Cubit', 'Firebase', 'Hive', 'Offline-first', '~200 tests'],
     type: 'Mobile app',
     year: '2026',
-    color: '#8B5CF6',
+    color: '#38A3E8',
     image: '/projects/stockfy.jpg',
-    imageAlt: 'Stockfy app screens: dashboard, sleeping money, statistics and inventory',
+    imageAlt: 'Stockfy app screens: home with profit today, scan-to-sell basket, Shrinkage Radar and the profit report',
     github: 'https://github.com/rayen011/stockfy',
     live: null,
     liveLabel: 'Google Play',
@@ -293,28 +326,6 @@ export const PROJECTS = [
     github: 'https://github.com/rayen011/closingline',
     live: null,
     liveLabel: 'Live site',
-  },
-  {
-    id: 'nafas',
-    title: 'Nafas · نَفَس',
-    tagline: 'Your companion in every breath.',
-    description:
-      'An Islamic emotional-wellness companion in Arabic. A daily mood check-in, duas and ayat matched to how you feel, morning and evening adhkar with tap counters, a digital tasbih, prayer times and qibla that work offline — and an AI companion with a calm Islamic voice. Fully right-to-left, with Amiri typography for Quranic text.',
-    highlights: [
-      'Fully RTL Arabic UI, Amiri typography for Quran',
-      'Claude-powered companion (Nafas+ one-time purchase)',
-      'Offline prayer times, qibla and adhkar',
-      'Weekly mood insight cards, shareable',
-    ],
-    tags: ['Flutter', 'Claude API', 'Hive', 'RTL', 'Google Play Billing'],
-    type: 'Mobile app',
-    year: '2026',
-    color: '#1F9A6E',
-    image: '/projects/nafas.jpg',
-    imageAlt: 'Nafas app screens in Arabic: home, adhkar and settings',
-    github: 'https://github.com/rayen011/nafass',
-    live: null,
-    liveLabel: 'Google Play',
   },
 ]
 

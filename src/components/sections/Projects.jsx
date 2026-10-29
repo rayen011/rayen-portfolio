@@ -12,12 +12,15 @@ function GithubIcon({ size = 16 }) {
   )
 }
 
+/** `#RRGGBB` → `"r, g, b"`, so colours can drive the `--chip` custom property. */
+function rgbChannels(hex) {
+  const h = hex.replace('#', '')
+  return [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16)).join(', ')
+}
+
 function Tag({ label, color }) {
   return (
-    <span
-      className="px-2.5 py-1 rounded-md text-[11px] font-mono border text-text-secondary"
-      style={{ borderColor: `${color}33`, background: `${color}0d` }}
-    >
+    <span className="chip" style={{ '--chip': rgbChannels(color) }}>
       {label}
     </span>
   )
@@ -43,11 +46,11 @@ function ProjectCard({ project, index, total, progress }) {
     >
       <motion.article
         style={{ scale, transformOrigin: 'top center' }}
-        className="relative rounded-[1.75rem] border border-transparent overflow-hidden bg-card shadow-card"
+        className="panel relative rounded-[1.75rem] overflow-hidden"
         data-project={project.id}
       >
         <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(135deg, ${project.color}16, transparent 45%)` }} />
-        <div className="absolute inset-0 rounded-[1.75rem] pointer-events-none" style={{ boxShadow: `inset 0 0 0 1px ${project.color}33` }} />
+        <div className="absolute inset-0 rounded-[1.75rem] pointer-events-none z-10" style={{ boxShadow: `inset 0 0 0 1px ${project.color}2e` }} />
         <motion.div style={{ opacity: dim }} className="absolute inset-0 bg-base pointer-events-none z-20" />
 
         <div className="relative grid lg:grid-cols-2">
@@ -68,7 +71,7 @@ function ProjectCard({ project, index, total, progress }) {
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out-expo group-hover:!scale-[1.16]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-card/60 via-transparent to-transparent lg:bg-gradient-to-r" />
-            <div className="absolute top-5 left-5 flex items-center gap-2">
+            <div className="absolute top-5 left-5 flex items-center gap-2 z-10">
               <span className="px-3 py-1 rounded-full glass border border-white/10 font-mono text-[11px] text-text-primary">{project.type}</span>
               <span className="px-3 py-1 rounded-full glass border border-white/10 font-mono text-[11px] text-text-secondary">{project.year}</span>
             </div>
@@ -76,18 +79,24 @@ function ProjectCard({ project, index, total, progress }) {
 
           {/* Content */}
           <div className="p-7 md:p-10 lg:p-12 flex flex-col">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between gap-4 mb-6">
               <span className="font-mono text-xs text-text-muted">
                 {String(index + 1).padStart(2, '0')} <span className="opacity-50">/ {String(total).padStart(2, '0')}</span>
               </span>
-              {project.featured && (
-                <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold" style={{ background: `${project.color}22`, color: project.color }}>
-                  Latest
+              {(project.badge || project.featured) && (
+                <span className="chip chip--solid" style={{ '--chip': rgbChannels(project.color) }}>
+                  {project.live && (
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="absolute inline-flex h-full w-full rounded-full bg-current opacity-75 animate-ping" />
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-current" />
+                    </span>
+                  )}
+                  {project.badge || 'Latest'}
                 </span>
               )}
             </div>
 
-            <h3 className="font-display font-extrabold text-3xl md:text-4xl tracking-tight mb-3">{project.title}</h3>
+            <h3 className="font-display font-extrabold display-md mb-3">{project.title}</h3>
             <p className="text-lg md:text-xl font-medium mb-5" style={{ color: project.color }}>{project.tagline}</p>
             <p className="text-text-secondary text-sm md:text-[15px] leading-relaxed mb-7">{project.description}</p>
 
@@ -144,10 +153,7 @@ function MoreCard({ project, index }) {
       <SpotlightCard color={`${project.color}99`} className="h-full group" innerClassName="p-6 flex flex-col">
         <Wrapper {...wrapperProps} className="flex flex-col h-full">
           <div className="flex items-center justify-between mb-5">
-            <span
-              className="px-2.5 py-1 rounded-full text-[11px] font-mono"
-              style={{ background: `${project.color}18`, color: project.color }}
-            >
+            <span className="chip chip--solid" style={{ '--chip': rgbChannels(project.color) }}>
               {project.status}
             </span>
             <span className="text-text-muted transition-all duration-300 group-hover:text-gold group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>

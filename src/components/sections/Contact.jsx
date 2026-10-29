@@ -77,7 +77,7 @@ export default function Contact() {
   }
 
   const inputCls =
-    'w-full bg-surface border border-border rounded-xl px-4 py-3.5 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-gold/70 focus:shadow-gold-sm transition-all'
+    'w-full bg-base/60 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-gold/70 focus:shadow-gold-sm transition-all'
 
   return (
     <section id="contact" className="section-padding relative overflow-hidden">
@@ -159,7 +159,7 @@ export default function Contact() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="lg:col-span-6"
         >
-          <div className="relative rounded-[1.75rem] border border-border bg-card p-6 md:p-8 shadow-card overflow-hidden">
+          <div className="panel relative rounded-[1.75rem] p-6 md:p-8 overflow-hidden">
             <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gold/10 blur-3xl pointer-events-none" />
 
             <AnimatePresence mode="wait">

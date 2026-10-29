@@ -34,6 +34,7 @@ Everything respects `prefers-reduced-motion` (Lenis, grain and marquees switch o
 All copy, links and projects live in **`src/lib/data.js`**:
 
 - `PROFILE` — name, role, email, availability, timezone, CV path
+- `LATEST_RELEASE` — the store badge next to "available for new projects" in the hero
 - `SOCIAL_LINKS` — GitHub / LinkedIn / Upwork
 - `PROJECTS` — the stacked case-study cards (image, tagline, highlights, tags, links)
 - `MORE_PROJECTS` — the compact "Also on the shelf" grid

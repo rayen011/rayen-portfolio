@@ -18,21 +18,30 @@
   }
 
   body {
-    background-color: #0a0a0a;
-    color: #f5f5f5;
+    background-color: #070708;
+    color: #f7f7f8;
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* The display face is set tight and optically sized; set it once here so
+     every heading inherits the same voice. */
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.035em;
+    text-wrap: balance;
   }
 
   ::-webkit-scrollbar {
     width: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #0a0a0a;
+    background: #070708;
   }
   ::-webkit-scrollbar-thumb {
-    background: #262626;
+    background: #242428;
     border-radius: 3px;
   }
   ::-webkit-scrollbar-thumb:hover {
@@ -87,13 +96,13 @@ html.lenis body {
   }
 
   .section-padding {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    padding-top: 7rem;
+    padding-bottom: 7rem;
   }
   @media (min-width: 768px) {
     .section-padding {
-      padding-top: 8.5rem;
-      padding-bottom: 8.5rem;
+      padding-top: 10rem;
+      padding-bottom: 10rem;
     }
   }
 
@@ -107,14 +116,99 @@ html.lenis body {
   }
 
   .glass {
-    background: rgba(17, 17, 17, 0.6);
+    background: rgba(14, 14, 16, 0.62);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
+  }
+
+  /* Display type: one optical size per step, tracking tightening as it grows. */
+  .display-xl {
+    font-size: clamp(2.5rem, 5.4vw, 4.15rem);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+  }
+  .display-lg {
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+  .display-md {
+    font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+
+  /* Eyebrow / label voice, shared by every section and chip. */
+  .label-mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
   }
 
   .mask-fade-x {
     mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
     -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Surfaces: one panel and one chip, used everywhere                   */
+/* ------------------------------------------------------------------ */
+@layer components {
+  /* A card lit from above: a gradient hairline that fades down the edge,
+     plus a bright inner line along the top so it reads as a real surface. */
+  .panel {
+    position: relative;
+    border-radius: 1.5rem;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0) 38%),
+      #131316;
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+      0 24px 60px -30px rgba(0, 0, 0, 0.9);
+  }
+  .panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.03) 45%, rgba(255, 255, 255, 0.02));
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Small pill used for tags, statuses and meta. `--chip` tints it. */
+  .chip {
+    --chip: 245, 166, 35;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(var(--chip), 0.26);
+    background: rgba(var(--chip), 0.08);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.02em;
+    color: #9e9ea7;
+    white-space: nowrap;
+  }
+  .chip--solid {
+    border-color: transparent;
+    background: rgba(var(--chip), 0.16);
+    color: rgb(var(--chip));
+  }
+
+  /* A single hairline rule that fades out at both ends. */
+  .rule {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
   }
 }
 
@@ -236,10 +330,11 @@ html.lenis body {
   --y: 50%;
   --spot: rgba(245, 166, 35, 0.55);
   position: relative;
-  border-radius: 1.25rem;
-  background: #262626;
+  border-radius: 1.5rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.03) 45%, rgba(255, 255, 255, 0.02));
   padding: 1px;
   isolation: isolate;
+  box-shadow: 0 24px 60px -34px rgba(0, 0, 0, 0.9);
 }
 .spotlight::before {
   content: '';
@@ -257,8 +352,10 @@ html.lenis body {
 .spotlight > .spotlight-inner {
   position: relative;
   z-index: 1;
-  border-radius: calc(1.25rem - 1px);
-  background: #141414;
+  border-radius: calc(1.5rem - 1px);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 40%),
+    #131316;
   height: 100%;
   overflow: hidden;
 }
@@ -280,9 +377,50 @@ html.lenis body {
 /* ------------------------------------------------------------------ */
 .bg-grid {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 64px 64px;
+    linear-gradient(rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.032) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+/* A finer grid laid over the coarse one, so the mesh has two scales. */
+.bg-grid-fine {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Aurora: slow drifting colour behind the hero                        */
+/* ------------------------------------------------------------------ */
+.aurora {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(110px);
+  will-change: transform;
+}
+
+/* A horizon: one bright line fading out sideways, with a glow under it. */
+.horizon {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(245, 166, 35, 0.45) 35%,
+    rgba(255, 209, 102, 0.7) 50%,
+    rgba(245, 166, 35, 0.45) 65%,
+    transparent
+  );
+}
+.horizon::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 140px;
+  background: radial-gradient(60% 100% at 50% 0%, rgba(245, 166, 35, 0.14), transparent 70%);
+  pointer-events: none;
 }
 
 /* Typewriter caret */
@@ -299,7 +437,9 @@ html.lenis body {
   .grain,
   .marquee-track,
   .animate-spin-slow,
-  .animate-float {
+  .animate-float,
+  .animate-drift,
+  .aurora {
     animation: none !important;
   }
   *,
