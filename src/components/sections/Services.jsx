@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import SectionHeading from '@/components/ui/SectionHeading'
 import SpotlightCard from '@/components/ui/SpotlightCard'
 import { SERVICES } from '@/lib/data'
+import { fromDepth } from '@/lib/motion'
 
 const ICONS = {
   phone: (
@@ -33,20 +34,20 @@ const ICONS = {
 
 function ServiceCard({ service, index }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-8% 0px' }}
-      transition={{ duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      className="h-full"
-    >
+    <motion.div {...fromDepth(index * 0.1)} className="h-full">
       <SpotlightCard color={`${service.color}99`} className="h-full group" innerClassName="p-7 md:p-8 flex flex-col">
         <div className="flex items-start justify-between mb-8">
-          <div
-            className="w-12 h-12 rounded-2xl flex items-center justify-center p-3 transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110"
-            style={{ background: `${service.color}18`, color: service.color, border: `1px solid ${service.color}40` }}
-          >
-            {ICONS[service.icon]}
+          {/* The icon is a little body with a moon going round it. */}
+          <div className="service-orbit" style={{ '--body': service.color }}>
+            <div
+              className="service-body w-12 h-12 rounded-2xl flex items-center justify-center p-3"
+              style={{ background: `${service.color}18`, color: service.color, border: `1px solid ${service.color}40` }}
+            >
+              {ICONS[service.icon]}
+            </div>
+            <span className="service-ring" style={{ animationDelay: `${index * -3}s` }}>
+              <span className="service-moon" />
+            </span>
           </div>
           <span className="font-mono text-xs text-text-muted">{service.index}</span>
         </div>
@@ -74,8 +75,16 @@ function ServiceCard({ service, index }) {
 
 export default function Services() {
   return (
-    <section id="services" className="section-padding bg-surface/40 relative">
-      <div className="container-x">
+    <section id="services" className="section-padding relative overflow-hidden">
+      {/* Concentric orbits behind the grid, so the four services read as
+          bodies going round one centre. */}
+      <div className="orbit-field" aria-hidden="true">
+        <span className="orbit-ring" style={{ width: '38rem', height: '38rem' }} />
+        <span className="orbit-ring" style={{ width: '56rem', height: '56rem' }} />
+        <span className="orbit-ring" style={{ width: '76rem', height: '76rem' }} />
+      </div>
+
+      <div className="container-x relative">
         <SectionHeading
           index="02"
           eyebrow="What I do"

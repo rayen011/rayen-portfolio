@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { useCounter } from '@/hooks/useCounter'
 import SectionHeading from '@/components/ui/SectionHeading'
 import { STATS, MARKETS, PROFILE } from '@/lib/data'
+import { fromDepthSoft } from '@/lib/motion'
 
 const PARAGRAPHS = [
   "I'm a Flutter developer and product designer from Tunisia. For the last three years I've been building mobile apps end to end — the Figma flows, the Flutter front end, the Firebase or Supabase backend, the tests, and the store release.",
@@ -38,13 +39,9 @@ function Word({ children, progress, range }) {
 function Stat({ value, suffix, label, start, delay }) {
   const count = useCounter(value, 1600, start)
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay }}
-      className="flex flex-col gap-1"
-    >
+    <motion.div {...fromDepthSoft(delay)} className="relative flex flex-col gap-1 pt-7">
+      {/* Each stat hangs off a point on the constellation line above it. */}
+      <span className="stat-node" />
       <span className="font-display font-extrabold text-4xl md:text-5xl text-gold-gradient tabular-nums">
         {count}{suffix}
       </span>
@@ -148,11 +145,20 @@ export default function About() {
             ))}
           </div>
 
-          {/* Stats */}
-          <div ref={statsRef} className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-8 pt-10 border-t border-border">
-            {STATS.map((stat, i) => (
-              <Stat key={stat.label} {...stat} start={statsInView} delay={i * 0.1} />
-            ))}
+          {/* Stats, strung along a constellation line that traces itself in */}
+          <div ref={statsRef} className="relative mt-14 pt-10">
+            <motion.span
+              className="stat-line"
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.3, ease: [0.16, 1, 0.3, 1] }}
+            />
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              {STATS.map((stat, i) => (
+                <Stat key={stat.label} {...stat} start={statsInView} delay={i * 0.1} />
+              ))}
+            </div>
           </div>
 
           {/* Markets */}

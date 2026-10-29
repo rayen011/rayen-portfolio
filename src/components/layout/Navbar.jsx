@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValueEvent } from 'framer-motion'
-import { NAV_LINKS, SOCIAL_LINKS } from '@/lib/data'
+import { NAV_LINKS, SOCIAL_LINKS, SECTION_IDS } from '@/lib/data'
 import { scrollToTarget } from '@/components/ui/SmoothScroll'
 import Magnetic from '@/components/ui/Magnetic'
+import { useActiveSection } from '@/hooks/useActiveSection'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [active, setActive] = useState('')
+  const activeId = useActiveSection(SECTION_IDS, 'top')
+  const active = `#${activeId}`
 
   const { scrollY, scrollYProgress } = useScroll()
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.001 })
@@ -19,21 +21,6 @@ export default function Navbar() {
     setScrolled(y > 40)
     setHidden(y > prev && y > 160 && !menuOpen)
   })
-
-  // Track the section in view for the sliding indicator
-  useEffect(() => {
-    const sections = NAV_LINKS.map((l) => document.querySelector(l.href)).filter(Boolean)
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(`#${e.target.id}`)
-        })
-      },
-      { rootMargin: '-35% 0px -55% 0px' }
-    )
-    sections.forEach((s) => io.observe(s))
-    return () => io.disconnect()
-  }, [])
 
   useEffect(() => {
     document.documentElement.style.overflow = menuOpen ? 'hidden' : ''

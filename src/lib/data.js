@@ -34,6 +34,23 @@ export const SOCIAL_LINKS = {
  */
 export const FORM_ENDPOINT = ''
 
+/**
+ * Each section sits in its own patch of nebula. Two radial gradients per
+ * region; the backdrop crossfades between them as you scroll, so descending the
+ * page drifts through the galaxy rather than stepping between themed boxes.
+ */
+export const REGIONS = [
+  { id: 'top', hues: ['rgba(245,166,35,0.20)', 'rgba(109,40,217,0.18)'] },
+  { id: 'work', hues: ['rgba(109,40,217,0.20)', 'rgba(30,58,138,0.20)'] },
+  { id: 'services', hues: ['rgba(30,58,138,0.22)', 'rgba(14,165,233,0.12)'] },
+  { id: 'about', hues: ['rgba(109,40,217,0.17)', 'rgba(245,166,35,0.12)'] },
+  { id: 'process', hues: ['rgba(30,58,138,0.20)', 'rgba(109,40,217,0.15)'] },
+  { id: 'skills', hues: ['rgba(14,165,233,0.14)', 'rgba(109,40,217,0.20)'] },
+  { id: 'contact', hues: ['rgba(245,166,35,0.18)', 'rgba(109,40,217,0.16)'] },
+]
+
+export const SECTION_IDS = REGIONS.map((r) => r.id)
+
 export const NAV_LINKS = [
   { label: 'Work', href: '#work' },
   { label: 'Services', href: '#services' },
@@ -375,4 +392,41 @@ export const MORE_PROJECTS = [
     github: null,
     status: 'In progress',
   },
+]
+
+// ---------------------------------------------------------------------------
+// Star map
+//
+// Where each project sits on the work map, as a percentage of the map box, and
+// how bright it burns. Positions are hand-placed rather than generated so the
+// constellation stays balanced — retune them here, not in the component.
+// Keep x between 10 and 90 so labels don't run off the edge.
+// ---------------------------------------------------------------------------
+
+export const STAR_MAP = {
+  // The six case studies: bright, always labelled.
+  lifetycoon: { x: 50, y: 38, weight: 1 },
+  restock: { x: 21, y: 22, weight: 0.84 },
+  stockfy: { x: 79, y: 26, weight: 0.84 },
+  studyswap: { x: 14, y: 61, weight: 0.78 },
+  swiftdrop: { x: 45, y: 77, weight: 0.74 },
+  closingline: { x: 83, y: 62, weight: 0.74 },
+
+  // The smaller builds: dimmer companions that name themselves on hover.
+  debtkill: { x: 33, y: 50, weight: 0.42 },
+  rihla: { x: 64, y: 48, weight: 0.42 },
+  marbah: { x: 70, y: 86, weight: 0.4 },
+  enigma: { x: 26, y: 88, weight: 0.4 },
+  proofly: { x: 88, y: 42, weight: 0.44 },
+}
+
+/** Pairs of project ids joined by a faint line on the map. */
+export const CONSTELLATION = [
+  ['lifetycoon', 'restock'],
+  ['lifetycoon', 'stockfy'],
+  ['restock', 'studyswap'],
+  ['stockfy', 'closingline'],
+  ['studyswap', 'swiftdrop'],
+  ['swiftdrop', 'closingline'],
+  ['lifetycoon', 'swiftdrop'],
 ]

@@ -7,7 +7,7 @@ export default function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="relative bg-surface overflow-hidden">
+    <footer className="relative overflow-hidden">
       {/* A lit horizon in place of a plain top border */}
       <div className="horizon relative" aria-hidden="true" />
 

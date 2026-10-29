@@ -81,8 +81,6 @@ export default function Contact() {
 
   return (
     <section id="contact" className="section-padding relative overflow-hidden">
-      <div className="absolute -bottom-40 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full bg-gold/[0.07] blur-[140px] pointer-events-none" aria-hidden="true" />
-
       <div className="container-x grid lg:grid-cols-12 gap-14 lg:gap-10 relative">
         {/* Left */}
         <div className="lg:col-span-6">
@@ -93,9 +91,17 @@ export default function Contact() {
             description="Send me your scope — an idea, a Figma file, or an app that needs fixing — and I'll reply with a clear plan and an honest estimate."
           />
 
-          {/* Email */}
+          {/* Email — framed as the channel that's open and listening */}
           <div className="mt-10">
-            <p className="font-mono text-[11px] uppercase tracking-widest text-text-muted mb-3">Email</p>
+            <p className="label-mono text-text-muted mb-1 flex items-center">
+              <span className="signal signal--sm" aria-hidden="true">
+                <span className="signal-ring" />
+                <span className="signal-ring" />
+                <span className="signal-ring" />
+                <span className="signal-dot" />
+              </span>
+              Open channel
+            </p>
             <div className="flex flex-wrap items-center gap-3">
               <a href={`mailto:${PROFILE.email}`} className="font-display font-bold text-xl sm:text-2xl md:text-3xl tracking-tight hover:text-gold transition-colors break-all">
                 {PROFILE.email}
@@ -114,14 +120,14 @@ export default function Contact() {
 
           {/* Local time + availability */}
           <div className="mt-8 flex flex-wrap gap-3">
-            <div className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full border border-border bg-surface font-mono text-xs text-text-secondary">
+            <div className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full border border-white/10 bg-white/[0.04] font-mono text-xs text-text-secondary">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
               </span>
               {PROFILE.availabilityLabel}
             </div>
-            <div className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full border border-border bg-surface font-mono text-xs text-text-secondary tabular-nums">
+            <div className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full border border-white/10 bg-white/[0.04] font-mono text-xs text-text-secondary tabular-nums">
               <span className="text-gold">◔</span> {time || '--:--'} in {PROFILE.location} · replies within 24h
             </div>
           </div>

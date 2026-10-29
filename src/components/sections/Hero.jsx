@@ -56,16 +56,15 @@ export default function Hero({ ready }) {
       onMouseMove={onMove}
       className="relative min-h-screen flex flex-col overflow-hidden"
     >
-      {/* background layers, back to front: aurora, two grids, spotlight, vignette */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        <div className="aurora -top-56 -left-44 w-[640px] h-[640px] bg-gold/[0.13] animate-drift" />
-        <div className="aurora -bottom-56 -right-32 w-[680px] h-[680px] bg-[#8B5CF6]/[0.11] animate-drift [animation-delay:-11s]" />
-        <div className="aurora top-1/3 left-1/2 w-[420px] h-[420px] bg-[#3B82F6]/[0.07] animate-drift [animation-delay:-5s]" />
+      {/* The galaxy core, turning slowly far behind the headline. Everything
+          else behind the page is drawn once by <Galaxy />. */}
+      <div className="galaxy-core" aria-hidden="true">
+        <div className="galaxy-core-tilt">
+          <div className="galaxy-core-disc" />
+        </div>
+        <div className="galaxy-core-bulge" />
       </div>
-      <div className="absolute inset-0 bg-grid-fine [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,black,transparent_70%)] pointer-events-none" aria-hidden="true" />
-      <div className="absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_75%_65%_at_50%_40%,black_15%,transparent_78%)] pointer-events-none" aria-hidden="true" />
       <motion.div style={{ background: spotlight }} className="absolute inset-0 pointer-events-none" aria-hidden="true" />
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_80%_70%_at_50%_45%,transparent_40%,#070708_100%)]" aria-hidden="true" />
 
       {/* content */}
       <div className="relative z-10 flex-1 container-x grid lg:grid-cols-12 gap-12 lg:gap-6 items-center pt-28 pb-14 lg:pt-24 lg:pb-10">
